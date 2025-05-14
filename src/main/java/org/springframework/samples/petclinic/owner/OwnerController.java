@@ -85,7 +85,13 @@ class OwnerController {
 	}
 
 	@GetMapping("/owners/find")
-	public String initFindForm() {
+	public String initFindForm(@RequestParam(defaultValue = "1") int page, Model model) {
+		Page<Owner> ownersResults = owners.findAll(PageRequest.of(page - 1, 10));
+		List<Owner> listOwners = ownersResults.getContent();
+		model.addAttribute("currentPage", page);
+		model.addAttribute("totalPages", ownersResults.getTotalPages());
+		model.addAttribute("totalItems", ownersResults.getTotalElements());
+		model.addAttribute("listOwners", listOwners);
 		return "owners/findOwners";
 	}
 

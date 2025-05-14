@@ -142,6 +142,13 @@ class OwnerControllerTests {
 	}
 
 	@Test
+	void testProcessFindPageListsOwners() throws Exception {
+		Page<Owner> tasks = new PageImpl<>(List.of(george(), new Owner()));
+		when(this.owners.findAll(any(Pageable.class))).thenReturn(tasks);
+		mockMvc.perform(get("/owners/find?")).andExpect(status().isOk()).andExpect(view().name("owners/findOwners"));
+	}
+
+	@Test
 	void testProcessFindFormSuccess() throws Exception {
 		Page<Owner> tasks = new PageImpl<>(List.of(george(), new Owner()));
 		when(this.owners.findByLastNameStartingWith(anyString(), any(Pageable.class))).thenReturn(tasks);
